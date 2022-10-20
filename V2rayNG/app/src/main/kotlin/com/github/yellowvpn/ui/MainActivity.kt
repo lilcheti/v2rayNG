@@ -39,11 +39,16 @@ import com.github.yellowvpn.helper.SimpleItemTouchHelperCallback
 import com.github.yellowvpn.service.V2RayServiceManager
 import com.github.yellowvpn.util.*
 import com.github.yellowvpn.viewmodel.MainViewModel
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 import me.drakeet.support.toast.ToastCompat
 import java.io.File
 import java.io.FileOutputStream
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
@@ -60,17 +65,40 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     val mainViewModel: MainViewModel by viewModels()
 
     private val subStorage by lazy { MMKV.mmkvWithID(MmkvManager.ID_SUB, MMKV.MULTI_PROCESS_MODE) }
+    private var mInterstitialAd: InterstitialAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        //admob init
+        MobileAds.initialize(this) {}
+        //inter load
+        var adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(this,"ca-app-pub-8241048936065417/7883350528", adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                Log.d("Gads", "inter fucked: "+adError?.toString())
+                mInterstitialAd = null
+            }
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                Log.d("Gads", "inter Ad was loaded.")
+                mInterstitialAd = interstitialAd
+            }
+        })
+
+
         title = getString(R.string.title_server)
         setSupportActionBar(binding.toolbar)
 
         binding.fab.setOnClickListener {
-            toast("lol")
+            if (mInterstitialAd != null) {
+                mInterstitialAd?.show(this)
+            } else {
+                Log.d("Gads", "The interstitial ad wasn't ready yet.")
+            }
             if (mainViewModel.isRunning.value == true) {
                 Utils.stopVService(this)
             } else if (settingsStorage?.decodeString(AppConfig.PREF_MODE) ?: "VPN" == "VPN") {

@@ -180,7 +180,10 @@
                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
             </intent-filter>
         </receiver>
-        <!-- =====================Tasker===================== -->
+        <!-- =====================admob===================== -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8241048936065417~5069705729"/>
 
     </application>
 
