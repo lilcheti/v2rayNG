@@ -140,7 +140,7 @@ dependencies {
     implementation 'com.blacksquircle.ui:language-base:2.1.1'
     implementation 'com.blacksquircle.ui:language-json:2.1.1'
     //google admob
-    implementation 'com.google.android.gms:play-services-ads:21.3.0'
+    implementation 'com.google.android.gms:play-services-ads:20.1.0'
     //native ads
     implementation project(':nativetemplates')
 }
