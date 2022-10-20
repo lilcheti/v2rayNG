@@ -278,10 +278,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.import_qrcode -> {
-            importQRcode(true)
-            true
-        }
         R.id.import_clipboard -> {
             importClipboard()
             true
@@ -712,10 +708,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 startActivity(Intent(this, UserAssetActivity::class.java))
             }
             R.id.feedback -> {
-                Utils.openUri(this, AppConfig.v2rayNGIssues)
+                Utils.openUri(this, "https://t.me/YellowSupport")
             }
-            R.id.promotion -> {
-                Utils.openUri(this, "${Utils.decode(AppConfig.promotionUrl)}?t=${System.currentTimeMillis()}")
+            R.id.telegram -> {
+                Utils.openUri(this, "https://t.me/YellowSocks_VPN")
             }
             R.id.logcat -> {
                 startActivity(Intent(this, LogcatActivity::class.java))

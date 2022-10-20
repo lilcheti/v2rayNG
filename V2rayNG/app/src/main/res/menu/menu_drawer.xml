@@ -21,9 +21,9 @@
 
     <group android:id="@+id/group_id2">
         <item
-            android:id="@+id/promotion"
-            android:icon="@drawable/ic_whatshot_white_24dp"
-            android:title="@string/title_pref_promotion" />
+            android:id="@+id/telegram"
+            android:icon="@drawable/telegram"
+            android:title="Telegram Channel" />
         <item
             android:id="@+id/logcat"
             android:icon="@drawable/ic_logcat_white_24dp"

@@ -16,20 +16,6 @@
     </shortcut>
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_qu_scan_black_24dp"
-        android:shortcutDisabledMessage="@string/menu_item_import_config_qrcode"
-        android:shortcutId="shortcuts_scan"
-        android:shortcutLongLabel="@string/menu_item_import_config_qrcode"
-        android:shortcutShortLabel="@string/menu_item_import_config_qrcode">
-
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:targetClass="com.github.yellowvpn.ui.ScScannerActivity"
-            android:targetPackage="com.github.yellowvpn" />
-        <categories android:name="android.shortcut.conversation" />
-    </shortcut>
-    <shortcut
-        android:enabled="true"
         android:icon="@drawable/ic_qu_settings_black_24dp"
         android:shortcutDisabledMessage="@string/title_settings"
         android:shortcutId="shortcuts_settings"
