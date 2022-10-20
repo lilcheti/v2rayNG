@@ -30,6 +30,7 @@ import com.github.yellowvpn.AppConfig.ANG_PACKAGE
 import com.github.yellowvpn.BuildConfig
 import com.github.yellowvpn.databinding.ActivityMainBinding
 import com.github.yellowvpn.dto.EConfigType
+import com.github.yellowvpn.dto.SubscriptionItem
 import com.github.yellowvpn.extension.toast
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -38,6 +39,7 @@ import com.github.yellowvpn.helper.SimpleItemTouchHelperCallback
 import com.github.yellowvpn.service.V2RayServiceManager
 import com.github.yellowvpn.util.*
 import com.github.yellowvpn.viewmodel.MainViewModel
+import com.google.gson.Gson
 import kotlinx.coroutines.*
 import me.drakeet.support.toast.ToastCompat
 import java.io.File
@@ -57,6 +59,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private var mItemTouchHelper: ItemTouchHelper? = null
     val mainViewModel: MainViewModel by viewModels()
 
+    private val subStorage by lazy { MMKV.mmkvWithID(MmkvManager.ID_SUB, MMKV.MULTI_PROCESS_MODE) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -66,6 +70,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setSupportActionBar(binding.toolbar)
 
         binding.fab.setOnClickListener {
+            toast("lol")
             if (mainViewModel.isRunning.value == true) {
                 Utils.stopVService(this)
             } else if (settingsStorage?.decodeString(AppConfig.PREF_MODE) ?: "VPN" == "VPN") {
@@ -107,6 +112,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setupViewModel()
         copyAssets()
         migrateLegacy()
+
+        //shit I added for sub----------------------------------------------------------------
+        val subItem = SubscriptionItem()
+        var subId = "1"
+        subItem.remarks = "YellowSocks"
+        subItem.url = "https://framagit.org/JohnScub/newyellow/-/raw/main/gg"
+        subStorage?.encode(subId, Gson().toJson(subItem))
+        importConfigViaSub()
     }
 
     private fun setupViewModel() {
