@@ -2,53 +2,57 @@ package com.github.yellowvpn.ui
 
 import android.Manifest
 import android.content.*
+import android.content.res.ColorStateList
 import android.net.Uri
 import android.net.VpnService
-import androidx.recyclerview.widget.LinearLayoutManager
-import android.view.Menu
-import android.view.MenuItem
-import com.tbruyelle.rxpermissions.RxPermissions
-import com.github.yellowvpn.R
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.KeyEvent
-import com.github.yellowvpn.AppConfig
-import android.content.res.ColorStateList
-import com.google.android.material.navigation.NavigationView
-import androidx.core.content.ContextCompat
-import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.Log
+import android.view.KeyEvent
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.lifecycleScope
-import com.tencent.mmkv.MMKV
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.yellowvpn.AppConfig
 import com.github.yellowvpn.AppConfig.ANG_PACKAGE
 import com.github.yellowvpn.BuildConfig
+import com.github.yellowvpn.R
 import com.github.yellowvpn.databinding.ActivityMainBinding
 import com.github.yellowvpn.dto.EConfigType
 import com.github.yellowvpn.dto.SubscriptionItem
 import com.github.yellowvpn.extension.toast
-import rx.Observable
-import rx.android.schedulers.AndroidSchedulers
-import java.util.concurrent.TimeUnit
 import com.github.yellowvpn.helper.SimpleItemTouchHelperCallback
 import com.github.yellowvpn.service.V2RayServiceManager
 import com.github.yellowvpn.util.*
 import com.github.yellowvpn.viewmodel.MainViewModel
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
+import com.google.android.ads.nativetemplates.NativeTemplateStyle
+import com.google.android.ads.nativetemplates.TemplateView
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdOptions
+import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
+import com.tbruyelle.rxpermissions.RxPermissions
+import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.*
 import me.drakeet.support.toast.ToastCompat
+import rx.Observable
+import rx.android.schedulers.AndroidSchedulers
 import java.io.File
 import java.io.FileOutputStream
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import java.util.concurrent.TimeUnit
+
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
@@ -75,6 +79,29 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         //admob init
         MobileAds.initialize(this) {}
+        //native load
+        val adLoader = AdLoader.Builder(this, "ca-app-pub-8241048936065417/7890077624")
+                .forNativeAd { ad : NativeAd ->
+                    val styles = NativeTemplateStyle.Builder().build()
+                    val template = findViewById<TemplateView>(R.id.my_template)
+                    template.setStyles(styles)
+                    template.setNativeAd(ad)
+                }
+                .withAdListener(object : AdListener() {
+                    override fun onAdFailedToLoad(adError: LoadAdError) {
+                        // Handle the failure by logging, altering the UI, and so on.
+                        Log.d("Gads", "native fucked: "+adError?.toString())
+                        val template = findViewById<TemplateView>(R.id.my_template)
+                        template.visibility = View.GONE
+                    }
+                })
+                .withNativeAdOptions(NativeAdOptions.Builder()
+                        // Methods in the NativeAdOptions.Builder class can be
+                        // used here to specify individual options settings.
+                        .build())
+                .build()
+        adLoader.loadAd(AdRequest.Builder().build())
+
         //inter load
         var adRequest = AdRequest.Builder().build()
         InterstitialAd.load(this,"ca-app-pub-8241048936065417/7883350528", adRequest, object : InterstitialAdLoadCallback() {
@@ -94,6 +121,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setSupportActionBar(binding.toolbar)
 
         binding.fab.setOnClickListener {
+            //show inter
             if (mInterstitialAd != null) {
                 mInterstitialAd?.show(this)
             } else {

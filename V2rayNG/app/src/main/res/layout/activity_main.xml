@@ -22,7 +22,11 @@
                 android:layout_height="?attr/actionBarSize" />
 
         </com.google.android.material.appbar.AppBarLayout>
-
+        <com.google.android.ads.nativetemplates.TemplateView
+            android:id="@+id/my_template"
+            app:gnt_template_type="@layout/gnt_small_template_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
