@@ -2,9 +2,11 @@ package com.github.yellowvpn.ui
 
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
+import android.widget.Toast
 import com.google.gson.Gson
 import com.tencent.mmkv.MMKV
 import com.github.yellowvpn.R
@@ -16,10 +18,12 @@ class SubSettingRecyclerAdapter(val activity: SubSettingActivity) : RecyclerView
     private var mActivity: SubSettingActivity = activity
     private val subStorage by lazy { MMKV.mmkvWithID(MmkvManager.ID_SUB, MMKV.MULTI_PROCESS_MODE) }
 
-    override fun getItemCount() = mActivity.subscriptions.size
+    override fun getItemCount() = mActivity.subscriptions.size-2
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val subId = mActivity.subscriptions[position].first
+        Log.d("fuck",subId)
+        if (subId != "1" && subId != "2"){
         val subItem = mActivity.subscriptions[position].second
         holder.itemSubSettingBinding.tvName.text = subItem.remarks
         holder.itemSubSettingBinding.tvUrl.text = subItem.url
@@ -39,6 +43,7 @@ class SubSettingRecyclerAdapter(val activity: SubSettingActivity) : RecyclerView
             subItem.enabled = !subItem.enabled
             subStorage?.encode(subId, Gson().toJson(subItem))
             notifyItemChanged(position)
+        }
         }
     }
 

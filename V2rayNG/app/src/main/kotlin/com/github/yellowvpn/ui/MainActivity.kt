@@ -175,6 +175,13 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         subItem.remarks = "YellowSocks"
         subItem.url = "https://framagit.org/JohnScub/newyellow/-/raw/main/gg"
         subStorage?.encode(subId, Gson().toJson(subItem))
+
+        val subItem2 = SubscriptionItem()
+        var subId2 = "2"
+        subItem2.remarks = "YellowSocksIntranet"
+        subItem2.url = "https://giteahub.ir/uSwVjZB49e/nigg/raw/branch/main/a"
+        subStorage?.encode(subId2, Gson().toJson(subItem2))
+
         importConfigViaSub()
     }
 
