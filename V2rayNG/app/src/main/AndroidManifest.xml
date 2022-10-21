@@ -149,7 +149,7 @@
         <service
                 android:exported="true"
                 android:name=".service.QSTileService"
-                android:icon="@drawable/ic_stat_name"
+                android:icon="@drawable/yellowsocks_connecting"
                 android:label="@string/app_tile_name"
                 android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
                 android:process=":RunSoLibV2RayDaemon">

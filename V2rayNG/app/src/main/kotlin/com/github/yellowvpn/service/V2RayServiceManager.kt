@@ -279,7 +279,7 @@ object V2RayServiceManager {
                 }
 
         mBuilder = NotificationCompat.Builder(service, channelId)
-                .setSmallIcon(R.drawable.ic_stat_name)
+                .setSmallIcon(R.drawable.yellowsocks_connecting)
                 .setContentTitle(currentConfig?.remarks)
                 .setPriority(NotificationCompat.PRIORITY_MIN)
                 .setOngoing(true)
@@ -320,11 +320,11 @@ object V2RayServiceManager {
     private fun updateNotification(contentText: String?, proxyTraffic: Long, directTraffic: Long) {
         if (mBuilder != null) {
             if (proxyTraffic < NOTIFICATION_ICON_THRESHOLD && directTraffic < NOTIFICATION_ICON_THRESHOLD) {
-                mBuilder?.setSmallIcon(R.drawable.ic_stat_name)
+                mBuilder?.setSmallIcon(R.drawable.yellowsocks_connecting)
             } else if (proxyTraffic > directTraffic) {
-                mBuilder?.setSmallIcon(R.drawable.ic_stat_proxy)
+                mBuilder?.setSmallIcon(R.drawable.yellowsocks_connecting)
             } else {
-                mBuilder?.setSmallIcon(R.drawable.ic_stat_direct)
+                mBuilder?.setSmallIcon(R.drawable.yellowsocks_connecting)
             }
             mBuilder?.setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
             mBuilder?.setContentText(contentText) // Emui4.1 need content text even if style is set as BigTextStyle
