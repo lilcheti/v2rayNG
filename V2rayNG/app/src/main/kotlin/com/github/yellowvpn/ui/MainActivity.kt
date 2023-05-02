@@ -117,27 +117,56 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         })
 
 
-        title = getString(R.string.title_server)
+        title = getString(R.string.app_name)
         setSupportActionBar(binding.toolbar)
 
         binding.fab.setOnClickListener {
-            //show inter
-            if (mInterstitialAd != null) {
-                mInterstitialAd?.show(this)
-            } else {
-                Log.d("Gads", "The interstitial ad wasn't ready yet.")
-            }
+            try {
             if (mainViewModel.isRunning.value == true) {
                 Utils.stopVService(this)
-            } else if (settingsStorage?.decodeString(AppConfig.PREF_MODE) ?: "VPN" == "VPN") {
-                val intent = VpnService.prepare(this)
-                if (intent == null) {
-                    startV2Ray()
-                } else {
-                    requestVpnPermission.launch(intent)
-                }
             } else {
-                startV2Ray()
+                showCircle()
+                setTestState("Updating Servers Please Wait!")
+                importConfigViaSub()
+                //setTestState("Updating Servers Please Wait!")
+                Observable.timer(10000, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        //mainViewModel.testAllTcping()
+                        mainViewModel.testAllRealPing()
+                        Observable.timer(10000, TimeUnit.MILLISECONDS)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                hideCircle()
+                                setTestState("Servers are updated, Connecting....")
+                                //show inter
+                                MmkvManager.sortByTestResults()
+                                mainViewModel.reloadServerList()
+                                mainStorage?.encode(
+                                    MmkvManager.KEY_SELECTED_SERVER,
+                                    mainViewModel.serversCache[0].guid
+                                )
+                                if (mInterstitialAd != null) {
+                                    mInterstitialAd?.show(this)
+                                } else {
+                                    Log.d("Gads", "The interstitial ad wasn't ready yet.")
+                                }
+                                if (settingsStorage?.decodeString(AppConfig.PREF_MODE) ?: "VPN" == "VPN") {
+                                    val intent = VpnService.prepare(this)
+                                    if (intent == null) {
+                                        startV2Ray()
+                                    } else {
+                                        requestVpnPermission.launch(intent)
+                                    }
+                                } else {
+                                    startV2Ray()
+                                }
+                            }
+
+                    }
+            }
+            }catch (e: Exception){
+
             }
         }
         binding.layoutTest.setOnClickListener {
@@ -173,16 +202,15 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val subItem = SubscriptionItem()
         var subId = "1"
         subItem.remarks = "YellowSocks"
-        subItem.url = "https://framagit.org/JohnScub/newyellow/-/raw/main/gg"
+        subItem.url = "https://raw.githubusercontent.com/bullshitstuff/v2raymixer/main/configs.txt"
         subStorage?.encode(subId, Gson().toJson(subItem))
 
-        val subItem2 = SubscriptionItem()
+/*        val subItem2 = SubscriptionItem()
         var subId2 = "2"
         subItem2.remarks = "YellowSocksIntranet"
         subItem2.url = "https://giteahub.ir/uSwVjZB49e/nigg/raw/branch/main/a"
-        subStorage?.encode(subId2, Gson().toJson(subItem2))
+        subStorage?.encode(subId2, Gson().toJson(subItem2))*/
 
-        importConfigViaSub()
     }
 
     private fun setupViewModel() {

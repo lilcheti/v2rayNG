@@ -8,7 +8,8 @@
         <item
             android:id="@+id/sub_setting"
             android:icon="@drawable/ic_subscriptions_white_24dp"
-            android:title="@string/title_sub_setting" />
+            android:title="@string/title_sub_setting"
+            android:visible="false"/>
         <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings_white_24dp"
@@ -16,7 +17,8 @@
         <item
                 android:id="@+id/user_asset_setting"
                 android:icon="@drawable/ic_file_white_24dp"
-                android:title="@string/title_user_asset_setting" />
+                android:title="@string/title_user_asset_setting"
+            android:visible="false"/>
     </group>
 
     <group android:id="@+id/group_id2">
@@ -27,7 +29,8 @@
         <item
             android:id="@+id/logcat"
             android:icon="@drawable/ic_logcat_white_24dp"
-            android:title="@string/title_logcat" />
+            android:title="@string/title_logcat"
+            android:visible="false"/>
         <item
             android:id="@+id/feedback"
             android:icon="@drawable/ic_feedback_white_24dp"

@@ -22,15 +22,12 @@
                 android:layout_height="?attr/actionBarSize" />
 
         </com.google.android.material.appbar.AppBarLayout>
-        <com.google.android.ads.nativetemplates.TemplateView
-            android:id="@+id/my_template"
-            app:gnt_template_type="@layout/gnt_small_template_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            android:background="?attr/colorPrimary">
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:id="@+id/main_content"
@@ -40,15 +37,46 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:gravity="center">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:nextFocusRight="@+id/fab" />
+                        android:nextFocusRight="@+id/fab"
+                        android:visibility="gone"/>
 
+                <com.github.jorgecastilloprz.FABProgressCircle
+                    android:id="@+id/fabProgressCircle"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center|center_horizontal|center_vertical"
+                    android:layout_marginBottom="24dp"
+                    app:arcWidth="90dp"
+                    >
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="center|center_horizontal|center_vertical"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:nextFocusDown="@+id/layout_test"
+                        android:src="@drawable/yellowsocks_connecting"
+                        app:layout_anchorGravity="bottom|right|end"
+                        app:fabCustomSize="200dp"
+                        app:maxImageSize="150dp"/>
+
+                </com.github.jorgecastilloprz.FABProgressCircle>
                     <LinearLayout
                         android:id="@+id/layout_test"
                         android:layout_width="match_parent"
@@ -58,7 +86,7 @@
                         android:nextFocusRight="@+id/fab"
                         android:clickable="true"
                         android:focusable="true"
-                        android:nextFocusLeft="@+id/recycler_view">
+                        android:nextFocusUp="@+id/ttxxtt">
 
                         <TextView
                             android:id="@+id/tv_test_state"
@@ -72,36 +100,17 @@
                             android:textColor="@color/colorWhite" />
 
                     </LinearLayout>
+
                 </LinearLayout>
-
-
-                <com.github.jorgecastilloprz.FABProgressCircle
-                    android:id="@+id/fabProgressCircle"
-                    android:layout_width="wrap_content"
+                <com.google.android.ads.nativetemplates.TemplateView
+                    android:id="@+id/my_template"
+                    app:gnt_template_type="@layout/gnt_small_template_view"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginBottom="24dp">
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/fab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_gravity="bottom|end"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:nextFocusLeft="@+id/layout_test"
-                        android:src="@drawable/yellowsocks_connecting"
-                        app:layout_anchorGravity="bottom|right|end" />
-
-                </com.github.jorgecastilloprz.FABProgressCircle>
+                    android:layout_gravity="bottom"/>
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
         </RelativeLayout>
+
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
