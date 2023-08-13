@@ -10,8 +10,8 @@
 
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.github.yellowvpn.ui.ScSwitchActivity"
-            android:targetPackage="com.github.yellowvpn" />
+            android:targetClass="com.github.bitcoinvpn.ui.ScSwitchActivity"
+            android:targetPackage="com.github.bitcoinvpn" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
     <shortcut
@@ -24,8 +24,8 @@
 
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.github.yellowvpn.ui.SettingsActivity"
-            android:targetPackage="com.github.yellowvpn" />
+            android:targetClass="com.github.bitcoinvpn.ui.SettingsActivity"
+            android:targetPackage="com.github.bitcoinvpn" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 </shortcuts>
